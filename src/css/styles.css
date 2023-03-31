@@ -39,10 +39,6 @@ a {
   text-decoration: none;
 }
 
-.is-hidden {
-  display: none;
-}
-
 .container {
   width: 100%;
   padding-top: 10px;
@@ -175,9 +171,13 @@ a {
   background-color: #1ea483;
 }
 
-/* .load-more.is-hidden {
+/* .load-more .is-hidden {
   display: none;
 } */
+
+.is-hidden {
+  display: none;
+}
 
 .gallery__text {
   /* margin-top: 2px; */
