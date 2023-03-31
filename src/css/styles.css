@@ -161,14 +161,14 @@ a {
 
   border: none;
   border-radius: 5px;
-  background-color: #16e7b6;
+  background-color: rgba(19, 218, 155, 0.868);
   color: white;
   cursor: pointer;
 }
 
 .load-more:hover,
 .load-more:focus {
-  background-color: #1ea483;
+  background-color: #54c8c6;
 }
 
 /* .load-more .is-hidden {
