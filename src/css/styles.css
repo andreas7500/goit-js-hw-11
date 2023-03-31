@@ -168,7 +168,7 @@ a {
 
 .load-more:hover,
 .load-more:focus {
-  background-color: #54c8c6;
+  background-color: rgb(7, 192, 146);
 }
 
 /* .load-more.is-hidden {

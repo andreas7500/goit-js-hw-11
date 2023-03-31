@@ -6,7 +6,7 @@ import fetchImages from './js/fetchImg';
 import cardTemplate from './js/templatas/card-template.hbs';
 import throttle from 'lodash.throttle';
 
-const THROTTLE_DELAY = 250;
+const THROTTLE_DELAY = 200;
 
 let lightbox = new SimpleLightbox('.photo-card a', {
   captionsData: 'alt',
@@ -37,7 +37,7 @@ async function onFormData(e) {
   e.preventDefault();
   page = 1;
   searchQuery = e.currentTarget.searchQuery.value.trim();
-  // console.log(searchQuery);
+  console.log(searchQuery);
   if (searchQuery === '') {
     Notify.info('This field cannot be empty!');
     return;
@@ -82,34 +82,6 @@ async function onFormData(e) {
   }
 }
 
-// window.addEventListener('scroll', throttle(onScrollWindow, THROTTLE_DELAY));
-
-// async function onScrollWindow() {
-//   const documentRect = document.documentElement.getBoundingClientRect();
-//   const heightBeforeLoading = 300;
-//   if (
-//     documentRect.bottom <
-//     document.documentElement.clientHeight + heightBeforeLoading
-//   ) {
-//     page += 1;
-
-//     try {
-//       const response = await fetchImages(searchQuery, page);
-//       renderCardImage(response.hits);
-//       lightbox.refresh();
-//       loadedHits += response.hits.length;
-
-//       if (loadedHits === response.totalHits) {
-//         refs.galleryText.classList.remove('is-hidden');
-//       }
-//     } catch (error) {
-//       Notify.failure('Ooops...Something goes wrong');
-//       console.log(error);
-//       refs.galleryText.classList.add('is-hidden');
-//     }
-//   }
-// }
-
 window.addEventListener('scroll', throttle(onScrollWindow, THROTTLE_DELAY));
 window.addEventListener('resize', throttle(onScrollWindow, THROTTLE_DELAY));
 
@@ -137,7 +109,37 @@ async function onScrollWindow() {
       document.querySelector('input').value = '';
 
       console.log(error);
-      // refs.galleryText.classList.add('is-hidden');
+      refs.galleryText.classList.add('is-hidden');
     }
   }
 }
+
+// hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+// window.addEventListener('scroll', throttle(onScrollWindow, THROTTLE_DELAY));
+
+// async function onScrollWindow() {
+//   const documentRect = document.documentElement.getBoundingClientRect();
+//   const heightBeforeLoading = 300;
+//   if (
+//     documentRect.bottom <
+//     document.documentElement.clientHeight + heightBeforeLoading
+//   ) {
+//     page += 1;
+
+//     try {
+//       const response = await fetchImages(searchQuery, page);
+//       renderCardImage(response.hits);
+//       lightbox.refresh();
+//       loadedHits += response.hits.length;
+
+//       if (loadedHits === response.totalHits) {
+//         refs.galleryText.classList.remove('is-hidden');
+//       }
+//     } catch (error) {
+//       Notify.failure('Ooops...Something goes wrong');
+//       console.log(error);
+//       refs.galleryText.classList.add('is-hidden');
+//     }
+//   }
+// }
+// ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg

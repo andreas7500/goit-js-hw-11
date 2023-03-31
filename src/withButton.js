@@ -4,9 +4,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import fetchImages from './js/fetchImg';
 import cardTemplate from './js/templatas/card-template.hbs';
-// import throttle from 'lodash.throttle';
-
-// const THROTTLE_DELAY = 250;
 
 let lightbox = new SimpleLightbox('.photo-card a', {
   captionsData: 'alt',
@@ -38,14 +35,14 @@ async function onFormData(e) {
   e.preventDefault();
   page = 1;
   searchQuery = e.currentTarget.searchQuery.value.trim();
-  // console.log(searchQuery);
+  console.log(searchQuery);
   if (searchQuery === '') {
     Notify.info('This field cannot be empty!');
     return;
   }
 
-  refs.loadMoreBtn.classList.add('is-hidden');
-  refs.galleryText.classList.add('is-hidden');
+  // refs.loadMoreBtn.classList.add('is-hidden');
+  // refs.galleryText.classList.add('is-hidden');
 
   try {
     const response = await fetchImages(searchQuery, page);
