@@ -15,12 +15,11 @@ let searchQuery = '';
 let page = 1;
 let loadedHits = 0;
 
-fetchImages().then(console.log);
 const refs = {
   form: document.querySelector('.search-form'),
   loadMoreBtn: document.querySelector('.load-more'),
   gallery: document.querySelector('.gallery'),
-  galleryText: document.querySelector('.gallery__text'),
+  galleryText: document.querySelector('.gallery-text'),
 };
 
 function renderCardImage(arr) {
@@ -33,16 +32,18 @@ refs.loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 
 async function onFormData(e) {
   e.preventDefault();
-  page = 1;
+
   searchQuery = e.currentTarget.searchQuery.value.trim();
-  console.log(searchQuery);
+  page = 1;
+  refs.gallery.innerHTML = '';
+
   if (searchQuery === '') {
     Notify.info('This field cannot be empty!');
     return;
   }
 
-  // refs.loadMoreBtn.classList.add('is-hidden');
-  // refs.galleryText.classList.add('is-hidden');
+  refs.loadMoreBtn.classList.add('is-hidden');
+  refs.galleryText.classList.add('is-hidden');
 
   try {
     const response = await fetchImages(searchQuery, page);
@@ -76,7 +77,8 @@ async function onFormData(e) {
     }
   } catch (error) {
     Notify.failure('Ooops...Something goes wrong');
-    document.querySelector('input').value = '';
+
+    searchQuery.reset();
     console.log(error);
   }
 }

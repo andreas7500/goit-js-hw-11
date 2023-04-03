@@ -6,7 +6,7 @@ import fetchImages from './js/fetchImg';
 import cardTemplate from './js/templatas/card-template.hbs';
 import throttle from 'lodash.throttle';
 
-const THROTTLE_DELAY = 200;
+const THROTTLE_DELAY = 150;
 
 let lightbox = new SimpleLightbox('.photo-card a', {
   captionsData: 'alt',
@@ -18,12 +18,12 @@ let searchQuery = '';
 let page = 1;
 let loadedHits = 0;
 
-fetchImages().then(console.log);
 const refs = {
   form: document.querySelector('.search-form'),
   loadMoreBtn: document.querySelector('.load-more'),
   gallery: document.querySelector('.gallery'),
-  galleryText: document.querySelector('.gallery__text'),
+  galleryText: document.querySelector('.gallery-text'),
+  galleryImg: document.querySelector('#galleryimg'),
 };
 
 function renderCardImage(arr) {
@@ -35,9 +35,11 @@ refs.form.addEventListener('submit', onFormData);
 
 async function onFormData(e) {
   e.preventDefault();
-  page = 1;
+
   searchQuery = e.currentTarget.searchQuery.value.trim();
-  console.log(searchQuery);
+  page = 1;
+  refs.gallery.innerHTML = '';
+
   if (searchQuery === '') {
     Notify.info('This field cannot be empty!');
     return;
@@ -45,16 +47,10 @@ async function onFormData(e) {
 
   refs.loadMoreBtn.classList.add('is-hidden');
   refs.galleryText.classList.add('is-hidden');
+
   try {
     const response = await fetchImages(searchQuery, page);
     loadedHits = response.hits.length;
-
-    if (response.totalHits > 40) {
-      refs.loadMoreBtn.classList.add('is-hidden');
-    } else {
-      refs.loadMoreBtn.classList.add('is-hidden');
-      refs.galleryText.classList.add('is-hidden');
-    }
 
     if (response.totalHits > 0) {
       Notify.success(`Hooray! We found ${response.totalHits} images.`);
@@ -65,19 +61,19 @@ async function onFormData(e) {
     }
 
     if (response.totalHits === 0) {
-      console.log(input.value);
       refs.gallery.innerHTML = '';
+      document.querySelector('input').value = '';
 
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+
       refs.loadMoreBtn.classList.add('is-hidden');
       refs.galleryText.classList.add('is-hidden');
     }
   } catch (error) {
     Notify.failure('Ooops...Something goes wrong');
-    refs.gallery.innerHTML = '';
-    document.querySelector('input').value = '';
+
     console.log(error);
   }
 }
@@ -88,14 +84,19 @@ window.addEventListener('resize', throttle(onScrollWindow, THROTTLE_DELAY));
 async function onScrollWindow() {
   const height = document.body.offsetHeight;
   const screenHeight = window.innerHeight;
+
   const scrolled = window.scrollY;
+
   const threshold = height - screenHeight / 4;
+
   const position = scrolled + screenHeight;
 
   if (position >= threshold) {
     page += 1;
+
     try {
       const response = await fetchImages(searchQuery, page);
+
       renderCardImage(response.hits);
       lightbox.refresh();
       loadedHits += response.hits.length;
@@ -105,9 +106,6 @@ async function onScrollWindow() {
       }
     } catch (error) {
       Notify.failure('Ooops...Something goes wrong');
-      refs.gallery.innerHTML = '';
-      document.querySelector('input').value = '';
-
       console.log(error);
       refs.galleryText.classList.add('is-hidden');
     }
